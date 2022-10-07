@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-ivs": "^3.186.0",
+    "@aws-sdk/client-ivschat": "^3.186.0",
     "@stitches/react": "^1.2.8",
     "amazon-ivs-player": "^1.13.0",
     "file-loader": "^6.2.0",

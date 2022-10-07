@@ -20,7 +20,7 @@ const globalStylesObj = {
     '-webkit-font-smoothing': 'antialiased',
     'font-feature-settings': 'kern',
     textRendering:'optimizeLegibility',
-    color:'$fgColor'
+    color:'$bgColor'
 
     // wordSpacing: '-1.21px',
     // fontSize: '120%',

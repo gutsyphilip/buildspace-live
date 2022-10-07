@@ -7,10 +7,10 @@ import IVSPlayer from './IVSPlayer';
 const HappeningRightNow = () => {
   return (
     <StyledContainer>
-        <header>
-            <h1 className='ttl'>Happening Right Now</h1>
-        </header>
-        <IVSPlayer src={STREAM_PLAYBACK_URL} handleQuizEvent={() => { }} />
+      <header>
+        <h1 className='ttl'>Happening Right Now</h1>
+      </header>
+      <IVSPlayer src={STREAM_PLAYBACK_URL} handleQuizEvent={() => { }} />
     </StyledContainer>
   )
 }
@@ -18,8 +18,8 @@ const HappeningRightNow = () => {
 export default HappeningRightNow
 
 const StyledContainer = styled('section', {
-    my: '$6',
-    '& > header':{
-        mb: '$5',
-    }
+  my: '$6',
+  '& > header': {
+    mb: '$5',
+  },
 })

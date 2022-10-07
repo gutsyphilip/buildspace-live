@@ -13,53 +13,41 @@ export const {
 } = createStitches({
   theme: {
     colors: {
-      black: '#222524',
-      lightBlack: '#666666',
+      black:'#151515',
+      red: '#F65259',
+      blue: '#2563EB',
       white: '#ffffff',
-  
-      bgColor: '#151515',
-      bgLightColor: '#191919',
-      fgColor: '$white',
-  
-      btnPrimaryBg: '$white',
-      btnPrimaryFg: '$black',
-  
-      borderBgColor: '#202022',
+      grey: '#cccccc',
+      grayDark:'#EDEDED',
+      darkPurple:'#260C5A',
+      purple:'#622AD2',
+      green:'#C4F861',
+
+
+      brandPurple: `#6A36FF`,
+      brandYellow: `#F4DA69`,
+      brandOrange:'#FF6D3B',
+      brandMagenta:'#442B3E',
+      themeOrangeLight: `#CEBAB3`,
+
+      bgColor: '$white',
+      // bgLightColor: '#F5F5F5',
+      // bgLightColor: '#F7F6F9',
+      // bgLightColor: '#F5F4F7',
+      // bgLightColor: '#F6F4F5',
+      bgLightColor: '#F5F2FD',
+      fgColor: '$black',
 
       textDark: '$black',
       textFaint: '#F2F2F2',
       textLight: '#404040',
       textLightBgDark:'#D5DCE7',
-      // black:'#151515',
-      // red: '#F65259',
-      // blue: '#2563EB',
-      // white: '#ffffff',
-      // grey: '#cccccc',
-      // grayDark:'#EDEDED',
-      // darkPurple:'#260C5A',
-      // purple:'#622AD2',
-      // green:'#C4F861',
 
+      btnPrimaryBg: '$black',
+      btnPrimaryFg: '$white',
 
-      // brandPurple: `#6A36FF`,
-      // brandYellow: `#F4DA69`,
-      // brandOrange:'#FF6D3B',
-      // brandMagenta:'#442B3E',
-      // themeOrangeLight: `#CEBAB3`,
-
-      // bgColor: '$white',
-      // // bgLightColor: '#F5F5F5',
-      // // bgLightColor: '#F7F6F9',
-      // // bgLightColor: '#F5F4F7',
-      // // bgLightColor: '#F6F4F5',
-      // bgLightColor: '#F5F2FD',
-      // fgColor: '$black',
-
-      // btnPrimaryBg: '$black',
-      // btnPrimaryFg: '$white',
-
-      // borderBgColor: '#F0F0F5',
-      // borderBgColorDark:'#374151'
+      borderBgColor: '#F0F0F5',
+      borderBgColorDark:'#374151'
     },
     space: {
       1: '4px',
@@ -289,20 +277,4 @@ export const {
 
 export type CSS = Stitches.CSS<typeof config>;
 
-export const darkTheme = createTheme('dark-theme', {
-  colors: {
-    black: '#222524',
-    lightBlack: '#666666',
-    white: '#ffffff',
-
-    bgColor: '#151515',
-    bgLightColor: '#191919',
-    fgColor: '$white',
-
-    btnPrimaryBg: '$white',
-    btnPrimaryFg: '$black',
-
-    borderBgColor: '#202022',
-  },
-});
 
