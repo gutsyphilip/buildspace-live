@@ -5,7 +5,6 @@ const path = require("path");
 module.exports = withReactSvg({
   include: path.resolve(__dirname, "assets/svgs"),
   webpack(config, options) {
-    config.experiments = { asyncWebAssembly: true };
     return config;
   },
   reactStrictMode: true,
