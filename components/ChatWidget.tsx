@@ -1,5 +1,6 @@
 import React from 'react'
 import Button from '../design-system/Button';
+import Input from '../design-system/Input';
 import { styled } from '../styles';
 import { PUBLIC_CHAT_ENDPOINT, PUBLIC_CHAT_TOKEN } from '../utils/config';
 
@@ -7,6 +8,7 @@ const ChatWidget = () => {
     const [messages, setMessages] = React.useState([])
     const [connection, setConnection] = React.useState(null)
     const [chatToken, setChatToken] = React.useState(null)
+    const [message, setMessage] = React.useState('')
 
     // POST req /api/auth to get token
     const fetchChatToken = async () => {
@@ -17,7 +19,7 @@ const ChatWidget = () => {
             },
             body: JSON.stringify({
                 userId: "gutsyphilip",
-                displayName: "Jonah",
+                displayName: "gutsyphilip",
             }),
         });
         const data = await res.json();
@@ -58,10 +60,12 @@ const ChatWidget = () => {
         };
 
         connectionInit.onmessage = (event) => {
-            console.log("onmessage", event)
             const data = JSON.parse(event.data);
+            console.log("onmessage", data)
+
             const msg = {
-                display_name: data?.Sender?.Attributes?.DisplayName,
+                userId: data?.Sender?.UserId,
+                displayName: data?.Sender?.Attributes?.displayName,
                 message: data.Content,
                 timestamp: data.SendTime
             };
@@ -98,22 +102,23 @@ const ChatWidget = () => {
         // };
     }
 
-    const isSocketActive = () => {
-        return connection?.readyState === 1
-    };
-
 
     const handleSendMessage = () => {
-        const payload = {
-            "Action": "SEND_MESSAGE",
-            // "RequestId": "OPTIONAL_ID_YOU_CAN_SPECIFY_TO_TRACK_THE_REQUEST",
-            // Generate random changing message
-            "Content": `Hello from builder ${Math.random()}`,
-            "Attributes": {
-                "DisplayName": "gutsyphilip",
+        if (message) {
+            try {
+                const payload = {
+                    "Action": "SEND_MESSAGE",
+                    // "RequestId": "OPTIONAL_ID_YOU_CAN_SPECIFY_TO_TRACK_THE_REQUEST",
+                    "Content": message,
+                    "Attributes": {
+                        "DisplayName": "gutsyphilip",
+                    }
+                }
+                connection.send(JSON.stringify(payload));
+            } catch (error) {
+                console.error(error);
             }
         }
-        connection.send(JSON.stringify(payload));
     }
 
 
@@ -131,20 +136,24 @@ const ChatWidget = () => {
 
     return (
         <StyledChatWidget>
-            {messages.map((msg) => {
-                return (
-                    <div key={`${msg.display_name}_${msg.timestamp}`}>
-                        <h3>{msg.display_name}</h3>
-                        <p>{msg.message}</p>
-                    </div>
-                )
-            })
-            }
-            {/* {isSocketActive() ? */}
-            {/* : <p style={{ color: '#151515' }}>Connecting to chat...</p> */}
-            {/* } */}
-            <Button onClick={handleSendMessage}>Send</Button>
+            <StyledChatWidgetHeader>
+                <h2 className='ttl'>🦄 Global chat</h2>
+            </StyledChatWidgetHeader>
 
+            <StyledMessages>
+                {messages.map((msg) => {
+                    return (
+                        <div key={`${msg.userId}_${msg.timestamp}`}>
+                            <h3></h3>
+                            <p><b>{msg.userId}:</b>{msg.message}</p>
+                        </div>
+                    )
+                })}
+            </StyledMessages>
+            <StyledChatWidgetFooter>
+                <Input isMultiline value={message} onChange={(e) => { setMessage(e.target.value) }} />
+                <Button onClick={handleSendMessage} size="S">Send</Button>
+            </StyledChatWidgetFooter>
         </StyledChatWidget>
     )
 }
@@ -152,10 +161,33 @@ const ChatWidget = () => {
 export default ChatWidget
 
 const StyledChatWidget = styled('section', {
+    position: 'relative',
     backgroundColor: '$bgColor',
-    padding: '$5',
+    padding: '$4 $3',
+    borderRadius: '$2',
 
     '&  *': {
         color: '$textDark',
     }
+})
+
+const StyledChatWidgetHeader = styled('header', {
+    position: 'absolute',
+    // top: '$3',
+    width: 'calc(100% - ($4 * 2))',
+})
+
+const StyledMessages = styled('div', {
+    marginTop: '$8',
+
+})
+
+const StyledChatWidgetFooter = styled('footer', {
+    position: 'absolute',
+    bottom: '$3',
+    right: '$3',
+    border: '1px solid $borderBgColorDark',
+    borderRadius: '$2',
+    padding: '$2',
+    width: 'calc(100% - ($3 * 2))',
 })
