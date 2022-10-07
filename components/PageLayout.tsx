@@ -19,11 +19,13 @@ export default PageLayout
 
 
 const StyledGrid = styled('section',{
-    display:'grid',
-    gridTemplateColumns:'1fr 400px',
-    height: '100vh',
-    maxHeight: '100vh',
-    overflowY: 'hidden',
+    '@bp3':{
+        display:'grid',
+        gridTemplateColumns:'1fr 500px',
+        height: '100vh',
+        maxHeight: '100vh',
+        overflowY: 'hidden',
+    },
 
     '& :first-child':{
         overflowY: 'scroll',

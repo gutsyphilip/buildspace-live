@@ -12,7 +12,6 @@ const Navbar = () => {
             </a>
         </Link>
         <h6>WHERE BUILDERS BUILD WITH FRIENDS.</h6>
-
     </StyledContainer>
   )
 }
