@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "NODE_OPTIONS=--experimental-wasm-modules next dev",
+    "build": "NODE_OPTIONS=--experimental-wasm-modules next build",
+    "start": "NODE_OPTIONS=--experimental-wasm-modules next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@stitches/react": "^1.2.8",
     "amazon-ivs-player": "^1.13.0",
     "file-loader": "^6.2.0",
     "next": "12.3.1",
