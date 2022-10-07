@@ -3,6 +3,9 @@ import Button from '../design-system/Button';
 import Input from '../design-system/Input';
 import { styled } from '../styles';
 import { PUBLIC_CHAT_ENDPOINT, PUBLIC_CHAT_TOKEN } from '../utils/config';
+import SetDisplayName from './SetDisplayName';
+
+import uuid4 from "uuid4";
 
 const ChatWidget = () => {
     const [messages, setMessages] = React.useState([])
@@ -10,16 +13,16 @@ const ChatWidget = () => {
     const [chatToken, setChatToken] = React.useState(null)
     const [message, setMessage] = React.useState('')
 
-    // POST req /api/auth to get token
-    const fetchChatToken = async () => {
+
+    const fetchChatToken = async ({ displayName, userId }) => {
         const res = await fetch("/api/chat/auth", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                userId: "gutsyphilip",
-                displayName: "gutsyphilip",
+                userId,
+                displayName
             }),
         });
         const data = await res.json();
@@ -37,15 +40,6 @@ const ChatWidget = () => {
 
         connectionInit.onopen = (event) => {
             console.info("Connected to the chat room.")
-            // var t = setInterval(function () {
-            //     if (connectionInit.readyState != 1) {
-            //         clearInterval(t);
-            //         return;
-            //     }
-            //     connectionInit.send('{type:"ping"}');
-            // }, 5000);
-
-            //   renderConnect();
         };
 
         connectionInit.onclose = (event) => {
@@ -103,30 +97,30 @@ const ChatWidget = () => {
     }
 
 
-    const handleSendMessage = () => {
+    const handleSendMessage = async () => {
         if (message) {
             try {
                 const payload = {
                     "Action": "SEND_MESSAGE",
                     // "RequestId": "OPTIONAL_ID_YOU_CAN_SPECIFY_TO_TRACK_THE_REQUEST",
                     "Content": message,
-                    "Attributes": {
-                        "DisplayName": "gutsyphilip",
-                    }
                 }
-                connection.send(JSON.stringify(payload));
+                await connection.send(JSON.stringify(payload));
+                setMessage('')
             } catch (error) {
                 console.error(error);
             }
         }
     }
 
-
-    React.useEffect(() => {
-        fetchChatToken().then((data) => {
+    const handleSetDisplayName = async (displayName: string) => {
+        const userId = await uuid4()
+        await fetchChatToken({ displayName, userId }).then((data) => {
             setChatToken(data.token);
         })
-    }, [])
+    }
+
+
 
     React.useEffect(() => {
         if (chatToken) {
@@ -145,14 +139,21 @@ const ChatWidget = () => {
                     return (
                         <div key={`${msg.userId}_${msg.timestamp}`}>
                             <h3></h3>
-                            <p><b>{msg.userId}:</b>{msg.message}</p>
+                            <p><b>{msg.displayName}:</b>{msg.message}</p>
                         </div>
                     )
                 })}
             </StyledMessages>
             <StyledChatWidgetFooter>
-                <Input isMultiline value={message} onChange={(e) => { setMessage(e.target.value) }} />
-                <Button onClick={handleSendMessage} size="S">Send</Button>
+                {!chatToken
+                    ? <SetDisplayName handleSetDisplayName={handleSetDisplayName} /> :
+                    <>
+                        <Input isMultiline value={message} placeholder="Enter your message" onChange={(e) => { setMessage(e.target.value) }} />
+                        <br />
+                        <Button css={{ float: 'right' }} onClick={handleSendMessage} size="S">Send</Button>
+                    </>
+                }
+
             </StyledChatWidgetFooter>
         </StyledChatWidget>
     )
@@ -164,7 +165,11 @@ const StyledChatWidget = styled('section', {
     position: 'relative',
     backgroundColor: '$bgColor',
     padding: '$4 $3',
-    borderRadius: '$2',
+    height: 'fit-content',
+
+    '@bp2': {
+        height: '100vh',
+    },
 
     '&  *': {
         color: '$textDark',
