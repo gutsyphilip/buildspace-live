@@ -12,4 +12,7 @@ const env = process.env.NEXT_PUBLIC_APP_ENV || process.env.NODE_ENV
 export const IS_PRODUCTION = env === 'production'
 
 export const STREAM_PLAYBACK_URL = process.env.NEXT_PUBLIC_PLAYBACK_URL;
+export const PUBLIC_CHAT_TOKEN = process.env.NEXT_PUBLIC_CHAT_TOKEN;
+export const PUBLIC_CHAT_ENDPOINT = process.env.NEXT_PUBLIC_CHAT_ENDPOINT;
+
 

@@ -11,6 +11,8 @@ const Navbar = () => {
                 <h2>buildspace.tv</h2>
             </a>
         </Link>
+        <h6>WHERE BUILDERS BUILD WITH FRIENDS.</h6>
+
     </StyledContainer>
   )
 }

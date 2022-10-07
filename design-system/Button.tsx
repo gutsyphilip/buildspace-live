@@ -108,16 +108,9 @@ const StyledButton = styled('button', {
             },
 
             primary: {
-                bc: '$btnPrimaryBg',
-                color: '$btnPrimaryFg',
-                '&:hover': {},
-                '&:active': {
-
-                },
-                '&:focus': {},
-                '&[data-radix-popover-trigger][data-state="open"], &[data-radix-dropdown-menu-trigger][data-state="open"]':
-                {
-
+                bc: '$fgColor',
+                '& span': {
+                    color: '$bgColor',
                 },
             },
 
@@ -126,7 +119,6 @@ const StyledButton = styled('button', {
                 '& span': {
                     color: '$fgColor !important',
                 },
-
             },
 
             outline: {

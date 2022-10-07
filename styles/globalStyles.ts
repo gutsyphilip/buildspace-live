@@ -13,14 +13,15 @@ const globalStylesObj = {
     fontStyle: 'inherit',
     fontWeight: 400,
     fontFamily: 'inherit',
-    color: 'inherit',
-    lineHeight: '1.2',
+    lineHeight: '120%',
     fontFeatureSettings: 'kern',
     'font-smoothing': 'antialiased',
     '-moz-osx-font-smoothing': 'antialiased',
     '-webkit-font-smoothing': 'antialiased',
     'font-feature-settings': 'kern',
     textRendering:'optimizeLegibility',
+    color:'$fgColor'
+
     // wordSpacing: '-1.21px',
     // fontSize: '120%',
     // cursor: `url('/images/custom-cursor-lightmode.svg') 9 6, auto`
@@ -30,7 +31,6 @@ const globalStylesObj = {
     textSizeAdjust: '100%',
     WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
     backgroundColor: '$bgColor',
-    color: 'fgColor',
     overflowX: 'hidden',
   },
   html: {
@@ -45,6 +45,10 @@ const globalStylesObj = {
     fontFamily: 'var(--font-text)',
     fontStyle: 'normal',
     minHeight: '100vh',
+    backgroundImage: 'linear-gradient(180deg,rgba(0,0,0,.8),rgba(0,0,0,.38)),url("https://uploads-ssl.webflow.com/62323c71bbabee32654e6d25/6259542de89d1d34b104f165_gradient.png")',
+    backgroundSize: 'auto,auto',
+    backgroundPosition: '0 0,0 100%',
+    backgroundRepeat: 'repeat,no-repeat',
   },
   '#root': {
     position: 'relative',
@@ -87,42 +91,32 @@ const globalStylesObj = {
   'h1,h2,h3,h4,h5,h6': {
     fontWeight: '600',
     fontStyle: 'normal',
-    color:'$textDark'
   },
   h1: {
     fontSize: '$heading3',
-    lineHeight: '$heading3',
 
     '@bp1':{
       fontSize: '$heading1',
-    lineHeight: '$heading1',
     }
 
   },
   h2: {
     fontSize: '$heading2',
-    lineHeight: '$heading2',
   },
   h3: {
     fontSize: '$heading3',
-    lineHeight: '$heading3',
   },
   h4: {
     fontSize: '$heading4',
-    lineHeight: '$heading4',
   },
   h5: {
     fontSize: '$heading5',
-    lineHeight: '$heading5',
   },
   h6: {
     fontSize: '$heading6',
-    lineHeight: '$heading6',
   },
   'p, ul, li , a': {
     fontSize: '$body1',
-    lineHeight: '150%',
-    // color:'$textLight'
   },
 };
 

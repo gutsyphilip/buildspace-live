@@ -1,11 +1,11 @@
 import { NextPage } from 'next';
-import type { AppProps } from 'next/app'
 import { ReactElement, ReactNode, useState } from 'react';
 import { useEffect } from 'react';
-import Navbar from '../components/Navbar';
-import SEO from '../design-system/SEO';
-import { globalStyles } from '../styles/globalStyles'
 
+import SEO from '../design-system/SEO';
+import { globalStyles } from '../styles/globalStyles';
+
+import type { AppProps } from 'next/app'
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode
 }
@@ -27,7 +27,6 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   return <>
     <SEO />
-    <Navbar/>
     {showChild && getLayout(<Component {...pageProps} />)}
   </>
 }

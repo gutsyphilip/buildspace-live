@@ -80,7 +80,7 @@ const IVSPlayer = ({ src, handleQuizEvent }: IVSPlayerProps) =>{
      ivsPlayer.addEventListener(events.PlayerEventType.ERROR, (payload) => {
        const { type, code, source, message } = payload;
        console.log(type, code, source, message);
-       alert(message);
+      //  alert(message);
      });
    }, [src]);
  
@@ -106,5 +106,5 @@ const IVSPlayer = ({ src, handleQuizEvent }: IVSPlayerProps) =>{
  export default IVSPlayer;
 
  const StyleVideo = styled('video', {
-
+    background:'$bgLightColor'
  })

@@ -11,8 +11,10 @@ import { styled } from '../styles';
 
 import type { NextPage } from 'next'
 import HappeningRightNow from '../components/HappeningRightNow';
+import PageLayout from '../components/PageLayout';
+import { NextPageWithLayout } from './_app';
 
-const Home: NextPage = () => {
+const Home: NextPageWithLayout = () => {
 
   // Load IVS tech
   const { loading, error } = useScript({
@@ -33,31 +35,14 @@ const Home: NextPage = () => {
 
 
   return (
-    <HomeWrapper>
-      <StyledHeader>
-        <h1 className='ttl'>Where builders build with friends.</h1>
-      </StyledHeader>
+    <Container>
       <HappeningRightNow /> 
-    </HomeWrapper>
+    </Container>
   )
 }
 
+Home.getLayout = (page) => <PageLayout>{page}</PageLayout>
+
 export default Home
-
-const HomeWrapper = styled('section', Container, {
-  
-})
-
-
-
-
-const StyledHeader = styled('section', {
-  my: '$10',
-
-  '& > .ttl':{
-    fontSize:'$display1'
-  }
-})
-
 
 
