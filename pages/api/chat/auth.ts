@@ -1,3 +1,4 @@
+import { BUILDSPACE_AWS_ROOM_IDENTIFIER } from './../../../utils/config';
 import { CreateChatTokenCommand } from '@aws-sdk/client-ivschat';
 
 import awsIVSChatClient from '../../../utils/libs/awsIVSChatClient';
@@ -27,7 +28,7 @@ export default async function authHandler(
             "displayName": req.body.displayName,
           },
           "capabilities": ["SEND_MESSAGE"],
-          "roomIdentifier": "arn:aws:ivschat:us-east-1:079102459196:room/njmmAimQse2a",
+          "roomIdentifier": BUILDSPACE_AWS_ROOM_IDENTIFIER,
           "userId": req.body.userId,
           "duration:": 180
         };
