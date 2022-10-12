@@ -3,7 +3,7 @@ import { globalCss } from './stitches.config';
 const globalStylesObj = {
   ':root': {
     '--font-text': [
-      "'Inter', Arial, -apple-system, 'Segoe UI', Helvetica Neue, Helvetica, Roboto, sans-serif, system-ui, 'Apple Color Emoji', 'Segoe UI Emoji'",
+      "Arial, -apple-system, 'Segoe UI', Helvetica Neue, Helvetica, Roboto, sans-serif, system-ui, 'Apple Color Emoji', 'Segoe UI Emoji'",
     ],
   },
   '*,*::before,*::after': {
@@ -21,10 +21,6 @@ const globalStylesObj = {
     'font-feature-settings': 'kern',
     textRendering:'optimizeLegibility',
     color:'$bgColor'
-
-    // wordSpacing: '-1.21px',
-    // fontSize: '120%',
-    // cursor: `url('/images/custom-cursor-lightmode.svg') 9 6, auto`
   },
   'html, body': {
     minWidth: '320px',

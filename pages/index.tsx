@@ -1,18 +1,10 @@
-import { useRef } from 'react';
-import { useEffect } from 'react';
-
-import IVSPlayer from '../components/IVSPlayer';
-import Container from '../design-system/Container';
-import useScript from '../hooks/useScript';
-import { styled } from '../styles';
-
-
-
-
-import type { NextPage } from 'next'
 import HappeningRightNow from '../components/HappeningRightNow';
 import PageLayout from '../components/PageLayout';
+import Container from '../design-system/Container';
+import PageLoader from '../design-system/PageLoader';
+import useScript from '../hooks/useScript';
 import { NextPageWithLayout } from './_app';
+
 
 const Home: NextPageWithLayout = () => {
 
@@ -26,7 +18,7 @@ const Home: NextPageWithLayout = () => {
   });
 
   if (loading || loadingPlugin) {
-    return <p>loading ivs videojs tech and plugins...</p>;
+    return <PageLoader />;
   }
 
   if (error || pluginError) {
@@ -36,7 +28,7 @@ const Home: NextPageWithLayout = () => {
 
   return (
     <Container>
-      <HappeningRightNow /> 
+      <HappeningRightNow />
     </Container>
   )
 }

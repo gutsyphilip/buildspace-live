@@ -7,12 +7,16 @@ interface SetDisplayNameProps {
 }
 
 const SetDisplayName: React.FC<SetDisplayNameProps> = (props) => {
+    const [isSubmitting, setIsSubmitting] = React.useState(false)
     const [name, setName] = React.useState('')
 
     const handleSubmit = async (e) => {
+        setIsSubmitting(true)
         e.preventDefault()
         await props.handleSetDisplayName(name)
+        setIsSubmitting(false)
     }
+
     return (
         <form onSubmit={handleSubmit}>
             <header>
@@ -20,7 +24,7 @@ const SetDisplayName: React.FC<SetDisplayNameProps> = (props) => {
             </header>
             <Input placeholder='Yannick Jobs' value={name} onChange={(e) => { setName(e.target.value) }} />
             <br />
-            <Button css={{ float: 'right' }} type="submit" size="S">Join chat</Button>
+            <Button css={{ float: 'right' }} loading={isSubmitting} type="submit" size="S">Join chat</Button>
         </form>
     )
 }

@@ -10,7 +10,7 @@ const HappeningRightNow = () => {
       <header>
         <h1 className='ttl'>Happening Right Now 🔥</h1>
       </header>
-      <IVSPlayer src={STREAM_PLAYBACK_URL} handleQuizEvent={() => { }} />
+      <IVSPlayer src={STREAM_PLAYBACK_URL} />
     </StyledContainer>
   )
 }

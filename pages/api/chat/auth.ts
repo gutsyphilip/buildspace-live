@@ -1,30 +1,15 @@
-import { BUILDSPACE_AWS_SECRET_ACCESS_KEY } from './../../../utils/config';
+import { CreateChatTokenCommand } from '@aws-sdk/client-ivschat';
+
+import awsIVSChatClient from '../../../utils/libs/awsIVSChatClient';
+
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { IvschatClient, CreateChatTokenCommand } from "@aws-sdk/client-ivschat";
-import { BUILDSPACE_WS_ACCESS_KEY_ID } from '../../../utils/config';
-const client = new IvschatClient({ 
-  region: "us-east-1",
-  credentials: {
-    accessKeyId: BUILDSPACE_WS_ACCESS_KEY_ID,
-    secretAccessKey: BUILDSPACE_AWS_SECRET_ACCESS_KEY,
-  },
-});
 
 
-
-
-type Data = {
-  name: string
-}
 
 async function createChatToken(params) {
   const command = new CreateChatTokenCommand(params);
-  const result = await client.send(command);
-  /* If the duration is 60 seconds or less (minimum allowed),
-     generate a new token every 30 seconds. Otherwise,
-     generate a new token every duration minus 60 seconds.
-  */
+  const result = await awsIVSChatClient.send(command);
   const regenerateFrequencyInSeconds = params.duration <= 60 ? 30 : params.duration - 60;
   setTimeout(() => createChatToken(params), regenerateFrequencyInSeconds * 1000);
   return result;
@@ -32,7 +17,7 @@ async function createChatToken(params) {
 
 export default async function authHandler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<any>
 ) {
   switch (req.method) {
     case 'POST':

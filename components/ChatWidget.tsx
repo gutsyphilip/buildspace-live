@@ -2,17 +2,30 @@ import React from 'react'
 import Button from '../design-system/Button';
 import Input from '../design-system/Input';
 import { styled } from '../styles';
-import { PUBLIC_CHAT_ENDPOINT, PUBLIC_CHAT_TOKEN } from '../utils/config';
+import { PUBLIC_CHAT_ENDPOINT } from '../utils/config';
 import SetDisplayName from './SetDisplayName';
 
 import uuid4 from "uuid4";
 
-const ChatWidget = () => {
-    const [messages, setMessages] = React.useState([])
-    const [connection, setConnection] = React.useState(null)
-    const [chatToken, setChatToken] = React.useState(null)
-    const [message, setMessage] = React.useState('')
+interface ChatWidgetStateParams {
+    messages: any[],
+    connection: any,
+    chatToken: string | null,
+    message: string,
+}
 
+const ChatWidget = () => {
+    const initialState: ChatWidgetStateParams = {
+        messages: [],
+        connection: null,
+        chatToken: null,
+        message: '',
+    }
+    const [state, setState] = React.useState(initialState);
+
+    const handleStateUpdate = async (payload: Partial<ChatWidgetStateParams>) => {
+        await setState({ ...state, ...payload })
+    }
 
     const fetchChatToken = async ({ displayName, userId }) => {
         const res = await fetch("/api/chat/auth", {
@@ -36,16 +49,14 @@ const ChatWidget = () => {
         const connectionInit = new WebSocket(PUBLIC_CHAT_ENDPOINT, token);
         console.log('connectionInit', connectionInit)
 
-        setConnection(connectionInit);
+        handleStateUpdate({ connection: connectionInit });
 
         connectionInit.onopen = (event) => {
             console.info("Connected to the chat room.")
         };
 
         connectionInit.onclose = (event) => {
-            // If the websocket closes, remove the current chat token
-            setChatToken(null);
-            //   renderDisconnect(event.reason);
+            handleStateUpdate({ chatToken: null })
         };
 
 
@@ -63,50 +74,20 @@ const ChatWidget = () => {
                 message: data.Content,
                 timestamp: data.SendTime
             };
-            setMessages((prev) => [...prev, msg]);
+            handleStateUpdate({ messages: [...state.messages, msg] });
         }
-        // connectionInit.onmessage = (event) => {
-        //   const data = JSON.parse(event.data);
-        //   const eventType = data["Type"];
-
-        //   switch (eventType) {
-        //     case "EVENT":
-        //       console.info("Received event:", data);
-        //       handleEvent(data);
-        //       break;
-        //     case "ERROR":
-        //       console.info("Received error:", data);
-        //       handleError(data);
-        //       break;
-        //     case "MESSAGE":
-        //       console.info("Received message:", data);
-        //       const messageType = data.Attributes?.message_type || "MESSAGE";
-        //       switch (messageType) {
-        //         case "STICKER":
-        //           handleSticker(data);
-        //           break;
-        //         default:
-        //           handleMessage(data);
-        //           break;
-        //       }
-        //       break;
-        //     default:
-        //       console.error("Unknown message received:", event);
-        //   }
-        // };
     }
 
 
     const handleSendMessage = async () => {
-        if (message) {
+        if (state.message) {
             try {
                 const payload = {
                     "Action": "SEND_MESSAGE",
-                    // "RequestId": "OPTIONAL_ID_YOU_CAN_SPECIFY_TO_TRACK_THE_REQUEST",
-                    "Content": message,
+                    "Content": state.message,
                 }
-                await connection.send(JSON.stringify(payload));
-                setMessage('')
+                await state.connection.send(JSON.stringify(payload));
+                handleStateUpdate({ message: '' });
             } catch (error) {
                 console.error(error);
             }
@@ -116,17 +97,18 @@ const ChatWidget = () => {
     const handleSetDisplayName = async (displayName: string) => {
         const userId = await uuid4()
         await fetchChatToken({ displayName, userId }).then((data) => {
-            setChatToken(data.token);
+            handleStateUpdate({ chatToken: data.token })
         })
     }
 
 
 
     React.useEffect(() => {
-        if (chatToken) {
-            initConnection(chatToken)
+        if (state.chatToken) {
+            initConnection(state.chatToken)
         }
-    }, [chatToken])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state.chatToken])
 
     return (
         <StyledChatWidget>
@@ -134,26 +116,24 @@ const ChatWidget = () => {
                 <h2 className='ttl'>🦄 Global chat</h2>
             </StyledChatWidgetHeader>
 
-            <StyledMessages>
-                {messages.map((msg) => {
+            <MessagesList>
+                {state.messages.map((msg) => {
                     return (
-                        <div key={`${msg.userId}_${msg.timestamp}`}>
-                            <h3></h3>
-                            <p><b>{msg.displayName}:</b>{msg.message}</p>
-                        </div>
+                        <MessagesListItem key={`${msg.userId}_${msg.timestamp}`}>
+                            <p><b>{msg.displayName}:</b> {msg.message}</p>
+                        </MessagesListItem>
                     )
                 })}
-            </StyledMessages>
+            </MessagesList>
             <StyledChatWidgetFooter>
-                {!chatToken
+                {!state.chatToken
                     ? <SetDisplayName handleSetDisplayName={handleSetDisplayName} /> :
                     <>
-                        <Input isMultiline value={message} placeholder="Enter your message" onChange={(e) => { setMessage(e.target.value) }} />
+                        <Input isMultiline value={state.message} placeholder="Enter your message" onChange={(e) => { handleStateUpdate({ message: e.target.value }) }} />
                         <br />
                         <Button css={{ float: 'right' }} onClick={handleSendMessage} size="S">Send</Button>
                     </>
                 }
-
             </StyledChatWidgetFooter>
         </StyledChatWidget>
     )
@@ -178,12 +158,17 @@ const StyledChatWidget = styled('section', {
 
 const StyledChatWidgetHeader = styled('header', {
     position: 'absolute',
-    // top: '$3',
     width: 'calc(100% - ($4 * 2))',
 })
 
-const StyledMessages = styled('div', {
+const MessagesList = styled('div', {
     marginTop: '$8',
+})
+
+const MessagesListItem = styled('div', {
+    '&:not(:first-child)': {
+        marginTop: '$2'
+    }
 
 })
 
